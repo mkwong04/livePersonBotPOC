@@ -39,6 +39,21 @@ public class LivePersonAPIConfig {
 	@Value("${liveperson.api.password}")
 	private String password;
 	
+	@Value("${bot.pulling.interval}")
+	private String botPullingInterval;
+	
+	@Bean
+	public long getBotPullingInterval(){
+		
+		if(botPullingInterval == null ){
+			//return defaut 1 min
+			return 1 * 60 * 1000L;
+		}
+		else{
+			return Long.valueOf(botPullingInterval);
+		}
+	}
+	
 	@Bean
 	public String getLivePersonUserName(){
 		//support override by -D system property
@@ -101,7 +116,7 @@ public class LivePersonAPIConfig {
 			//obtain base URL base on service domain
 			livePersonChatAgent.initDomain();
 			
-			livePersonChatAgent.startChatAgentSession("test");
+			livePersonChatAgent.startChatAgentSession("test", getBotPullingInterval());
 			
 			return livePersonChatAgent;
 		} catch (ChatServiceException e) {

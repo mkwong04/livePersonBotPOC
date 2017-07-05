@@ -106,9 +106,10 @@ public class LivePersonChatAgentServiceImpl implements AgentService{
 	/**
 	 * start chat session
 	 * @param name
+	 * @param pullingInterval
 	 * @throws LivePersonChatAgentServiceException 
 	 */
-	public void startChatAgentSession(String name) throws LivePersonChatAgentServiceException{
+	public void startChatAgentSession(String name, long pullingInterval) throws LivePersonChatAgentServiceException{
 		if(performLogin()){
 			try{
 				this.agentSessionId = apiClient.startAgentSession(this.bearer, this.baseUrl);
@@ -121,7 +122,7 @@ public class LivePersonChatAgentServiceImpl implements AgentService{
 				int maxChat = Integer.valueOf(maxChatStr);
 				//TODO: spawn MaxChat thread to listen and handle chat
 				InquiryBot bot = new InquiryBot(apiClient, this.bearer, this.agentSessionId, this.baseUrl, 
-												this.chatService, 1*60*1000L, log);
+												this.chatService, pullingInterval, log);
 				Thread agentThread = new Thread(bot);
 				agentThread.start();
 			}
