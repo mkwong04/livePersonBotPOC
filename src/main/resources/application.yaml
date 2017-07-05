@@ -1,0 +1,8 @@
+server:
+    contextPath: /opusai
+    port: 8090
+   
+endpoints:
+    shutdown:
+        enabled: true
+ 
